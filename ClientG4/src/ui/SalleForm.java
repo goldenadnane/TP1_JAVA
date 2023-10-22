@@ -371,15 +371,14 @@ public class SalleForm extends javax.swing.JInternalFrame {
     
     
     private void btnShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowActionPerformed
-        Object salle_id =Salle_id.getSelectedItem();
-        int salle_ID = Integer.parseInt(salle_id.toString());
+        int selectedSalle = (int) Salle_id.getSelectedItem();
         DefaultTableModel model = null;
        
         model = (DefaultTableModel) jTable2.getModel();
         
          try {
             model.setRowCount(0);
-            Salle s = daoSalles.findById(salle_ID);
+            Salle s = daoSalles.findById(selectedSalle);
             List<Machine> machines = s.getMachines();
             for(Machine machine : machines)
                

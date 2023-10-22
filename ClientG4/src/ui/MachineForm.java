@@ -7,6 +7,7 @@ package ui;
 
 import dao.IDao;
 import entities.Machine;
+import entities.Salle;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -24,6 +25,7 @@ public class MachineForm extends javax.swing.JInternalFrame {
 
     DefaultTableModel model = null;
     IDao<Machine> dao = null;
+    IDao<Salle> daoSalles = null;
     /**
      * Creates new form MachineForm
      */
@@ -32,7 +34,10 @@ public class MachineForm extends javax.swing.JInternalFrame {
         model = (DefaultTableModel) jTable1.getModel();
         
         try {
+          
+            
             dao = (IDao<Machine>) Naming.lookup(Utils.getUrl()+"/dao");
+            daoSalles = (IDao<Salle>) Naming.lookup(Utils.getUrl()+"/daoSalles");
         } catch (NotBoundException ex) {
             Logger.getLogger(MachineForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -41,11 +46,15 @@ public class MachineForm extends javax.swing.JInternalFrame {
             Logger.getLogger(MachineForm.class.getName()).log(Level.SEVERE, null, ex);
         }
         load();
+        loadComboBoxMachine_Salle_id_Values();
+        
+        
     }
     
     
     public void load(){
         try {
+            
             model.setRowCount(0);
             for(Machine m : dao.findAll())
                 model.addRow(new Object[]{
@@ -54,10 +63,37 @@ public class MachineForm extends javax.swing.JInternalFrame {
                     m.getMarque(),
                     m.getPrix()
                 });
+        
+
+            
         } catch (RemoteException ex) {
             Logger.getLogger(MachineForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        
+        
+        
+        
+  
+  
+        
+        
     }
+    
+    
+    
+    
+    
+        public void loadComboBoxMachine_Salle_id_Values(){
+         try {
+        for(Salle s : daoSalles.findAll())
+        Combo_machine.addItem(s.getId());
+    }                                        
+           catch(RemoteException ex){
+            }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,6 +111,8 @@ public class MachineForm extends javax.swing.JInternalFrame {
         txtRef = new javax.swing.JTextField();
         txtMarque = new javax.swing.JTextField();
         txtPrix = new javax.swing.JTextField();
+        Combo_machine = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         bnAdd = new javax.swing.JButton();
         bnUpdate = new javax.swing.JButton();
@@ -93,45 +131,60 @@ public class MachineForm extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Informations machine"));
 
-        jLabel1.setText("Référence :");
+        jLabel1.setText("Référence ");
 
-        jLabel2.setText("Marque : ");
+        jLabel2.setText("Marque ");
 
-        jLabel3.setText("Prix :  ");
+        jLabel3.setText("Prix   ");
+
+        Combo_machine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Combo_machineActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Salle_id");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRef)
-                    .addComponent(txtMarque)
-                    .addComponent(txtPrix, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtRef)
+                        .addComponent(txtMarque)
+                        .addComponent(txtPrix, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(Combo_machine, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(244, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(txtRef, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtMarque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMarque, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
+                    .addComponent(txtPrix, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Combo_machine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -230,7 +283,7 @@ public class MachineForm extends javax.swing.JInternalFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -239,11 +292,15 @@ public class MachineForm extends javax.swing.JInternalFrame {
     private void bnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bnAddActionPerformed
         try {
             // TODO add your handling code here:
+            Machine machine = new Machine();
+            machine.setRef(txtRef.getText());
+            machine.setMarque(txtMarque.getText());
+            machine.setPrix(Double.parseDouble(txtPrix.getText()));
+            int selectedSalle = (int)Combo_machine.getSelectedItem();
+            machine.setSalle(daoSalles.findById(selectedSalle));
             
-            String ref = txtRef.getText();
-            String marque = txtMarque.getText();
-            double prix = Double.parseDouble(txtPrix.getText());
-            dao.create(new Machine(ref, marque, prix));
+            dao.create(machine);
+           
             load();
         } catch (RemoteException ex) {
             Logger.getLogger(MachineForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -286,14 +343,20 @@ public class MachineForm extends javax.swing.JInternalFrame {
             }
     }//GEN-LAST:event_bnDeleteActionPerformed
 
+    private void Combo_machineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Combo_machineActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Combo_machineActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox Combo_machine;
     private javax.swing.JButton bnAdd;
     private javax.swing.JButton bnDelete;
     private javax.swing.JButton bnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

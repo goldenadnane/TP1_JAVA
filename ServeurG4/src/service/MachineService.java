@@ -7,6 +7,7 @@ package service;
 
 import dao.IDao;
 import entities.Machine;
+import entities.Salle;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -30,6 +31,7 @@ public class MachineService extends UnicastRemoteObject implements IDao<Machine>
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
+   
             session.save(o);
             tx.commit();
             etat =  true;

@@ -32,7 +32,7 @@ public class Salle implements Serializable{
     private int id;
     private String code;
     
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "salle",fetch = FetchType.EAGER)
     private List<Machine> machines;
    
     

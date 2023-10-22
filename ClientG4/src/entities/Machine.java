@@ -14,8 +14,10 @@ public class Machine implements Serializable{
     private String ref;
     private String marque;
     private double prix;
+
+ 
     
-    
+    private Salle salle;
    
 
     public Machine() {
@@ -60,7 +62,13 @@ public class Machine implements Serializable{
     }
 
        
-       
+       public Salle getSalle() {
+        return salle;
+    }
+
+    public void setSalle(Salle salle) {
+        this.salle = salle;
+    }
        
        
        

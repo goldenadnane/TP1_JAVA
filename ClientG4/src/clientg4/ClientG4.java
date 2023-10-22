@@ -42,7 +42,7 @@ public class ClientG4 {
             //    System.out.println(s);
            //}
             
-            System.out.println(daoSalles.findById(1));
+           
             
             
             // Créer des nouvelles salles
