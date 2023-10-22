@@ -320,6 +320,9 @@ public class MachineForm extends javax.swing.JInternalFrame {
             existingMachine.setRef(txtRef.getText());
             existingMachine.setMarque(txtMarque.getText());
             existingMachine.setPrix(Double.parseDouble(txtPrix.getText()));
+            int selectedSalle = (int)Combo_machine.getSelectedItem();
+
+            existingMachine.setSalle(daoSalles.findById(selectedSalle));
             dao.update(existingMachine);
             load();
         
